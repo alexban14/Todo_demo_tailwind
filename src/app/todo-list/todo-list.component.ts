@@ -37,4 +37,12 @@ export class TodoListComponent {
   todoItemTrackBy: TrackByFunction<TodoItem> = (id, item) => {
    return item.id; 
   }
+
+  onSaveTodo() {
+    const todoItem = {
+      name: this.formGroup$.value
+    } as TodoItem;
+
+    this.todoListService.saveTodo(todoItem)
+  }
 }
