@@ -1,15 +1,20 @@
-<app-todo-item
-	class="block mb-2"
-	*ngFor="let todoItem of todoItems$ | async; trackBy: todoItemTrackBy"
-	[todoItem]="todoItem"
-	>
-</app-todo-item>
+<div class="block mb-6">
+	<app-todo-item
+		class=" mb-1"
+		*ngFor="let todoItem of todoItems$ | async; trackBy: todoItemTrackBy"
+		[todoItem]="todoItem"
+		(delete)="onDeleteTodo($event)"
+		(edit)="onEdit($event)"
+		(isCompletedChange)="onIsCompletedChange($event)"
+		>
+	</app-todo-item>
+</div>
 
 <form [formGroup]="formGroup$" (submit)="onSaveTodo()">
 	<mat-form-field class="example-form-field" appearance="fill">
-		<mat-label>ToDo Item</mat-label>
+		<mat-label>Todo Item</mat-label>
 		<input matInput type="text" formControlName="name">
 	</mat-form-field>
 
-	<button mat-button color="primary" type="submit">Save</button>
+	<button mat-button color="primary" [disabled]="formGroup$.invalid" type="submit">Save</button>
 </form>

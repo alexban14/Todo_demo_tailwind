@@ -1,3 +1,14 @@
-<div>{{ todoItem.name }}</div>
-<input type="checkbox" [value]="todoItem.isCompleted">
-<mat-icon svgIcon="delete"></mat-icon>
+<mat-card>
+	<div class="flex justify-between items-center gap-4">
+		<div [class.line-through]="todoItem?.isCompleted">{{ todoItem.name }}</div>
+		<div>
+			<input type="checkbox" [formControl]="isCompletedFormControl" [value]="todoItem.isCompleted">
+			<button mat-icon-button (click)="onDelete()">
+				<mat-icon color="warn" fontIcon="delete">Delete</mat-icon>
+			</button>
+			<button mat-icon-button (click)="onEdit()">
+				<mat-icon color="accent" fontIcon="edit">Edit</mat-icon>
+			</button>
+		</div>
+	</div>
+</mat-card>

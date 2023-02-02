@@ -15,13 +15,13 @@ import { SharedModule } from '../shared/shared.module';
   styleUrls: ['./todo-list.component.scss'],
 })
 export class TodoListComponent {
-
+  selectedTodo!: TodoItem | null;
   todoItems$: Observable<TodoItem[]>;
 
   formGroup$: FormGroup<{
       id: FormControl<string | null>;
       name: FormControl<string | null>;
-      isCompleted: FormControl<string | null>;
+      isCompleted: FormControl<boolean | null>;
     }>;
 
   constructor(private fb: FormBuilder, private todoListService: TodoListService) {
@@ -30,7 +30,7 @@ export class TodoListComponent {
     this.formGroup$ = fb.group({
       id: new FormControl(''),
       name: new FormControl('', Validators.required),
-      isCompleted: new FormControl('', Validators.required)
+      isCompleted: new FormControl(false, Validators.required)
     });
   }
 
@@ -40,9 +40,27 @@ export class TodoListComponent {
 
   onSaveTodo() {
     const todoItem = {
+      ...this.selectedTodo,
       name: this.formGroup$.value.name
     } as TodoItem;
 
     this.todoListService.saveTodo(todoItem)
+
+    this.selectedTodo = null;
+    this.formGroup$.reset();
+  }
+
+  onDeleteTodo(todoItemId: string) {
+    this.todoListService.onDeleteTodo(todoItemId);
+  }
+
+  onEdit(todoItem: TodoItem) {
+    this.selectedTodo = todoItem
+
+    this.formGroup$.setValue(this.selectedTodo)
+  }
+
+  onIsCompletedChange(todoItem: TodoItem) {
+    this.todoListService.saveTodo(todoItem);
   }
 }

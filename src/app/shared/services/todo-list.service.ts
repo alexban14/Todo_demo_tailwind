@@ -41,15 +41,37 @@ export class TodoListService {
     })
   }
 
-  saveTodo(todoItem: TodoItem) {
-    if (todoItem.id) {
-      console.log(todoItem);
-    } else {
+  saveTodo(todoItemToSave: TodoItem) {
+    if (todoItemToSave.id) {
+      // edit
+      const updateTodoList =  this.state.value.todoItems.map(todoItem => {
+        if (todoItem.id === todoItemToSave.id) {
+          return todoItemToSave
+        }
+        return todoItem;
+      });
+
       this.state.next({
         ...this.state.value,
-        todoItems: [...this.state.value.todoItems, todoItem ] 
-      })
+        todoItems: [...updateTodoList] 
+      });
+    } else {
+      // create
+      const newTodoItem = {
+        ...todoItemToSave,
+        id: (this.state.value.todoItems.length+1).toString()
+      } as TodoItem;
+
+      this.state.next({
+        ...this.state.value,
+        todoItems: [...this.state.value.todoItems, newTodoItem] 
+      });
     }
+  }
+
+  onDeleteTodo(todoItemId: string) {
+    const newTodoList = this.state.value.todoItems.filter(todo => todo.id !== todoItemId);
+    this.state.next({...this.state.value, todoItems: newTodoList})
   }
 
 }
