@@ -40,7 +40,7 @@ export class TodoListComponent {
 
   onSaveTodo() {
     const todoItem = {
-      name: this.formGroup$.value
+      name: this.formGroup$.value.name
     } as TodoItem;
 
     this.todoListService.saveTodo(todoItem)

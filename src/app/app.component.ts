@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TodoListService } from './shared/services/todo-list.service';
 import { TodoListComponent } from './todo-list/todo-list.component';
 
 @Component({
@@ -10,4 +11,8 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 })
 export class AppComponent {
   title = 'to-do-tailwind';
+
+  constructor(private todoListService: TodoListService) {
+    this.todoListService.fetchTodoItems();
+  }
 }
